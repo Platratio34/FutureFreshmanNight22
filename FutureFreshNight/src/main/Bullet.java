@@ -70,5 +70,10 @@ public class Bullet extends GameObject {
 			destroy();
 		}
 	}
+	
+	@Override
+	public void onDestroy() {
+		parentGame.removeObject(this);
+	}
 
 }

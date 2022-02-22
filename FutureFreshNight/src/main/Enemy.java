@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Point;
 import java.util.Random;
 
 import peterGames.CollisionMask;
@@ -9,8 +10,11 @@ import peterGames.InputManeger;
 import peterGames.util.Config;
 import peterGraphics.util.Graphic;
 import peterGraphics.util.Shape;
+import peterLibrary.PeterMath;
 
 public class Enemy extends GameObject {
+	
+	private FFN_Player player;
 
 	public Enemy(GameController game, Config Cfg) {
 		super(game, Cfg);
@@ -36,13 +40,18 @@ public class Enemy extends GameObject {
 	@Override
 	public void postInit() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onTick(InputManeger input) {
 		// TODO Auto-generated method stub
-
+		if(Main.player != null && Main.player.deadText == null) {
+			Point pP = Main.player.getPoint();
+			Point dP = new Point(point.x-pP.x, point.y-pP.y);
+			dP.x = -1 * PeterMath.clampI(dP.x,2,-2);
+			dP.y = -1 * PeterMath.clampI(dP.y,2,-2);
+			moveC(dP);
+		}
 	}
 
 	@Override
@@ -62,6 +71,8 @@ public class Enemy extends GameObject {
 		if(other.getTag().equals("bullet")) {
 			destroy();
 			createNewEnemy(parentGame, cfg);
+		} else if(other.getTag().equals("player")) {
+			((FFN_Player)other).kill();
 		}
 	}
 	
@@ -79,6 +90,11 @@ public class Enemy extends GameObject {
 		e.move(x,y);
 		game.addObject(e);
 		Main.player.score++;
+	}
+	
+	@Override
+	public void onDestroy() {
+		parentGame.removeObject(this);
 	}
 
 }

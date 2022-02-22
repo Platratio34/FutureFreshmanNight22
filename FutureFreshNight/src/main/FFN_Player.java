@@ -25,11 +25,10 @@ public class FFN_Player extends GameObject {
 	public boolean right;
 	private Camera camera;
 	private Point cOffset;
-	private Point mOffset;
-	
 	private Point lDir;
 	public int score;
 	private GText scoreText;
+	public GText deadText = null;
 	
 	public FFN_Player(GameController game, Config Cfg, int Speed) {
 		super(game, Cfg);
@@ -43,9 +42,8 @@ public class FFN_Player extends GameObject {
 		lDir = new Point(1,0);
 		
 		cOffset = new Point(-290,-250);
-		mOffset = new Point(0,0);
-		scoreText = new GText(new Point(100,100),"Score: " + score, new Color(50,50,50));
-		game.addInfoText(scoreText);
+		new Point(0,0);
+		scoreText = new GText(new Point(10,10),"Score: " + score, new Color(0,0,0));
 	}
 
 	@Override
@@ -88,6 +86,8 @@ public class FFN_Player extends GameObject {
 			}
 		}
 		camera = parentGame.getdraw().getCamera();
+		parentGame.addInfoText(scoreText);
+		parentGame.addMouseUser(this);
 	}
 
 	@Override
@@ -119,35 +119,50 @@ public class FFN_Player extends GameObject {
 		if(input.wasKeyReleasedI(controls[3])) {
 			right = false;
 		}
-		boolean c = false;
-		if(up) {
-			c = c || !moveC(0,-speed,"bullet");
-		}
-		if(down) {
-			c = c || !moveC(0,speed,"bullet");
-		}
-		if(left) {
-			c = c || !moveC(-speed,0,"bullet");
-		}
-		if(right) {
-			c = c || !moveC(speed,0,"bullet");
-		}
-		
-		if((up || down) && !(left || right)) {
-			lDir.x = 0;
-			lDir.y = up?-10:10;
-		} else if(!(up || down) && (left || right)) {
-			lDir.y = 0;
-			lDir.x = left?-10:10;
+		if(deadText == null) {
+			boolean c = false;
+			if(up) {
+				c = c || !moveC(0,-speed,"bullet");
+			}
+			if(down) {
+				c = c || !moveC(0,speed,"bullet");
+			}
+			if(left) {
+				c = c || !moveC(-speed,0,"bullet");
+			}
+			if(right) {
+				c = c || !moveC(speed,0,"bullet");
+			}
+			
+			if((up || down) && !(left || right)) {
+				lDir.x = 0;
+				lDir.y = up?-10:10;
+			} else if(!(up || down) && (left || right)) {
+				lDir.y = 0;
+				lDir.x = left?-10:10;
+			} else {
+				lDir.x = left?-7:7;
+				lDir.y = up?-7:7;
+			}
+			
+//			if(input.wasKeyPressedI(controls[4])) {
+////				Bullet b = new Bullet(parentGame, cfg, (Point) lDir.clone(), true);
+////				b.move(point.x+10,point.y+10);
+////				parentGame.addObject(b);
+//				fire(lDir);
+//			}
+			
+			if(score >= 20) {
+				deadText = new GText(new Point(257,230),"You Win",new Color(0,200,0));
+				parentGame.addInfoText(deadText);
+			}
 		} else {
-			lDir.x = left?-7:7;
-			lDir.y = up?-7:7;
-		}
-		
-		if(input.wasKeyPressedI(controls[4])) {
-			Bullet b = new Bullet(parentGame, cfg, (Point) lDir.clone(), true);
-			b.move(point.x+10,point.y+10);
-			parentGame.addObject(b);
+			if(input.wasKeyReleasedI(controls[4])) {
+				parentGame.removeInfoText(deadText);
+				deadText = null;
+				moveA(90,90);
+				score = 0;
+			}
 		}
 		
 		Point camPos = camera.point;
@@ -169,11 +184,31 @@ public class FFN_Player extends GameObject {
 		
 		scoreText.text = "Score: " + score;
 	}
+	
+	private void fire(int x, int y) {
+		fire(new Point(x,y));
+	}
+	private void fire(Point p) {
+		Bullet b = new Bullet(parentGame, cfg, (Point)p.clone(), true);
+		b.move(point.x+10,point.y+10);
+		parentGame.addObject(b);
+	}
 
 	@Override
 	protected void collided(GameObject object) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void onMousePressed(int x, int y) {
+		x -= 290;
+		y -= 270;
+		double l = Math.sqrt((x*x)+(y*y));
+		x /= l/7d;
+		y /= l/7d;
+//		System.out.println("fire, "+ x +", " +y);
+		fire(x,y);
 	}
 
 	@Override
@@ -204,6 +239,11 @@ public class FFN_Player extends GameObject {
 		nP.speed = Integer.parseInt(file[6].substring(8, file[6].length()-1));
 //		System.out.println(speed);
 		return nP;
+	}
+
+	public void kill() {
+		deadText = new GText(new Point(257,230),"You Died",new Color(100,0,0));
+		parentGame.addInfoText(deadText);
 	}
 
 }
