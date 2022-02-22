@@ -1,0 +1,73 @@
+sector<0>: {
+	sectors:2;
+	refrences:;
+}
+sector<1>: {
+	object: {
+		type:null;
+		position:[0,0];
+		rotation:[0];
+		destroyed:false;
+		name:"game";
+		tag:"null";
+		null;
+	}
+	object: {
+		type:FFN_Player;
+		position:[10,10];
+		rotation:[0];
+		destroyed:false;
+		name:"object";
+		tag:"player";
+		speed:2;
+	}
+	object: {
+		type:GameBlock;
+		position:[0,0];
+		rotation:[0];
+		destroyed:false;
+		name:"object";
+		tag:"block";
+		size:[200,2];
+		color:[20,20,20];
+	}
+	object: {
+		type:GameBlock;
+		position:[0,0];
+		rotation:[0];
+		destroyed:false;
+		name:"object";
+		tag:"block";
+		size:[2,200];
+		color:[20,20,20];
+	}
+	object: {
+		type:GameBlock;
+		position:[0,200];
+		rotation:[0];
+		destroyed:false;
+		name:"object";
+		tag:"block";
+		size:[200,2];
+		color:[20,20,20];
+	}
+	object: {
+		type:GameBlock;
+		position:[200,0];
+		rotation:[0];
+		destroyed:false;
+		name:"object";
+		tag:"block";
+		size:[2,170];
+		color:[20,20,20];
+	}
+	object: {
+		type:Enemy;
+		position:[250,50];
+		rotation:[0];
+		destroyed:false;
+		name:"enemy";
+		tag:"enemy";
+		null;
+	}
+}
