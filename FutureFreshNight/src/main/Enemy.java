@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Random;
+
 import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
@@ -59,7 +61,24 @@ public class Enemy extends GameObject {
 	public void collided(GameObject other) {
 		if(other.getTag().equals("bullet")) {
 			destroy();
+			createNewEnemy(parentGame, cfg);
 		}
+	}
+	
+	public static void createNewEnemy(GameController game, Config cfg) {
+		Random rand = new Random();
+		int x = rand.nextInt(900) - 450;
+		int y = rand.nextInt(900) - 450;
+		while(x > 0 && x < 200) {
+			x = rand.nextInt(900) - 450;
+		}
+		while(y > 0 && y < 200) {
+			y = rand.nextInt(900) - 450;
+		}
+		Enemy e = new Enemy(game, cfg);
+		e.move(x,y);
+		game.addObject(e);
+		Main.player.score++;
 	}
 
 }

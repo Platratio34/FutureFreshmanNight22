@@ -9,7 +9,8 @@ import peterGraphics.util.Camera;
 
 public class Main {
 	
-private static GameController game;
+	private static GameController game;
+	public static FFN_Player player;
 	
 	public static void main(String[] args) {
 		game = new GameController();
@@ -27,9 +28,9 @@ private static GameController game;
 //		Player player2 = new Player(game, cfg);
 //		player2.move(10,50);
 //		game.addObject(player2);
-		GameBlock gB = new GameBlock(game,cfg,2,2,255,0,0);
-		gB.move(0,0);
-		game.addObject(gB);
+//		GameBlock gB = new GameBlock(game,cfg,2,2,255,0,0);
+//		gB.move(0,0);
+//		game.addObject(gB);
 //		game.loadWorld("save.txt");
 //		for(int i = 0; i < 600; i += 10) {
 //			GameBlock gB2 = new GameBlock(game,cfg,2,2,(i%50==0?255:0),(i%50==0?0:255),0);
@@ -49,9 +50,10 @@ private static GameController game;
 //		}
 //		game.addObject(new FFN_Player(game,cfg,2));
 		game.run();
-		Camera camera = game.getdraw().getCamera();
-		camera.point.x = -100;
-		camera.point.y = -100;
+		player = (FFN_Player)game.getObjectsByTag("player")[0];
+//		Camera camera = game.getdraw().getCamera();
+//		camera.point.x = -100;
+//		camera.point.y = -100;
 //		game.saveWorld("save.txt");
 	}
 }

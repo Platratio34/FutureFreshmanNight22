@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import peterGames.InputManeger;
 import peterGames.util.Config;
 import peterGames.util.Key;
 import peterGraphics.util.Camera;
+import peterGraphics.util.GText;
 import peterGraphics.util.Graphic;
 import peterGraphics.util.Shape;
 
@@ -26,6 +28,8 @@ public class FFN_Player extends GameObject {
 	private Point mOffset;
 	
 	private Point lDir;
+	public int score;
+	private GText scoreText;
 	
 	public FFN_Player(GameController game, Config Cfg, int Speed) {
 		super(game, Cfg);
@@ -40,6 +44,8 @@ public class FFN_Player extends GameObject {
 		
 		cOffset = new Point(-290,-250);
 		mOffset = new Point(0,0);
+		scoreText = new GText(new Point(100,100),"Score: " + score, new Color(50,50,50));
+		game.addInfoText(scoreText);
 	}
 
 	@Override
@@ -161,6 +167,7 @@ public class FFN_Player extends GameObject {
 		camPos.x = point.x + 10 + cOffset.x;
 		camPos.y = point.y + 10 + cOffset.y;
 		
+		scoreText.text = "Score: " + score;
 	}
 
 	@Override
