@@ -40,6 +40,6 @@ public class Main {
 //		game.loadWorld()
 		game.run();
 		player = (FFN_Player)game.getObjectsByTag("player")[0];
-		player.score = 19;
+//		player.score = 19;
 	}
 }
