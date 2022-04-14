@@ -3,6 +3,7 @@ package main;
 import java.awt.Point;
 import java.util.Random;
 
+import dataManagment.JsonObj;
 import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
@@ -63,6 +64,13 @@ public class Enemy extends GameObject {
 	public GameObject newObj(String[] file) {
 		Enemy nE = new Enemy(parentGame,cfg);
 		nE.setDefParm(file);
+		return nE;
+	}
+
+	@Override
+	public GameObject newObj(JsonObj obj) {
+		Enemy nE = new Enemy(parentGame,cfg);
+		nE.setDefParm(obj);
 		return nE;
 	}
 	

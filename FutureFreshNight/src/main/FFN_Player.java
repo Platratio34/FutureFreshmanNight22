@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.List;
 
+import dataManagment.JsonObj;
 import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
@@ -231,6 +232,10 @@ public class FFN_Player extends GameObject {
 		
 		return out;
 	}
+	@Override
+	public void onSave(JsonObj obj) {
+		obj.setKey("speed", speed);
+	}
 
 	@Override
 	public GameObject newObj(String[] file) {
@@ -238,6 +243,14 @@ public class FFN_Player extends GameObject {
 		nP.setDefParm(file);
 		nP.speed = Integer.parseInt(file[6].substring(8, file[6].length()-1));
 //		System.out.println(speed);
+		return nP;
+	}
+
+	@Override
+	public GameObject newObj(JsonObj obj) {
+		FFN_Player nP = new FFN_Player(parentGame,cfg,0);
+		nP.setDefParm(obj);
+		nP.speed = obj.getKey("speed").integer();
 		return nP;
 	}
 

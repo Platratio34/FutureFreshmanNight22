@@ -10,6 +10,8 @@ import peterGraphics.util.Shape;
 
 import java.awt.Point;
 
+import dataManagment.JsonObj;
+
 public class Bullet extends GameObject {
 	
 	Point speed;
@@ -74,6 +76,12 @@ public class Bullet extends GameObject {
 	@Override
 	public void onDestroy() {
 		parentGame.removeObject(this);
+	}
+
+	@Override
+	public GameObject newObj(JsonObj obj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
