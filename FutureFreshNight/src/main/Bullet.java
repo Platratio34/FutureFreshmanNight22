@@ -4,7 +4,6 @@ import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
 import peterGames.InputManeger;
-import peterGames.util.Config;
 import peterGraphics.util.Graphic;
 import peterGraphics.util.Shape;
 
@@ -17,8 +16,8 @@ public class Bullet extends GameObject {
 	Point speed;
 	boolean fromP;
 
-	public Bullet(GameController game, Config Cfg, Point speed, boolean fromP) {
-		super(game, Cfg);
+	public Bullet(GameController game, Point speed, boolean fromP) {
+		super(game);
 		this.speed = speed;
 		this.fromP = fromP;
 		tag = "bullet";

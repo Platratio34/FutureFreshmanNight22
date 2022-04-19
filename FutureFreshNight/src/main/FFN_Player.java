@@ -2,15 +2,12 @@ package main;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.List;
 
 import dataManagment.JsonObj;
 import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
 import peterGames.InputManeger;
-import peterGames.util.Config;
-import peterGames.util.Key;
 import peterGraphics.util.Camera;
 import peterGraphics.util.GText;
 import peterGraphics.util.Graphic;
@@ -18,7 +15,7 @@ import peterGraphics.util.Shape;
 
 public class FFN_Player extends GameObject {
 	
-	int[] controls = new int[5];
+//	int[] controls = new int[5];
 	int speed;
 	public boolean up;
 	public boolean down;
@@ -31,8 +28,8 @@ public class FFN_Player extends GameObject {
 	private GText scoreText;
 	public GText deadText = null;
 	
-	public FFN_Player(GameController game, Config Cfg, int Speed) {
-		super(game, Cfg);
+	public FFN_Player(GameController game, int Speed) {
+		super(game);
 		tag = "player";
 		speed = Speed;
 		up = false;
@@ -67,25 +64,25 @@ public class FFN_Player extends GameObject {
 
 	@Override
 	public void postInit() {
-		List<Key> keys = cfg.keys;
-		for(int i = 0; i < keys.size(); i++) {
-			Key key = keys.get(i);
-			if(key.name.equalsIgnoreCase("up")) {
-				controls[0] = key.id;
-			} else if(key.name.equalsIgnoreCase("down")) {
-				controls[1] = key.id;
-			} else if(key.name.equalsIgnoreCase("left")) {
-				controls[2] = key.id;
-			} else if(key.name.equalsIgnoreCase("right")) {
-				controls[3] = key.id;
-			} else if(key.name.equalsIgnoreCase("forward")) {
-				controls[0] = key.id;
-			} else if(key.name.equalsIgnoreCase("back")) {
-				controls[1] = key.id;
-			} else if(key.name.equalsIgnoreCase("fire")) {
-				controls[4] = key.id;
-			}
-		}
+//		List<Key> keys = parentGame.getConfig().keys;
+//		for(int i = 0; i < keys.size(); i++) {
+//			Key key = keys.get(i);
+//			if(key.name.equalsIgnoreCase("up")) {
+//				controls[0] = key.id;
+//			} else if(key.name.equalsIgnoreCase("down")) {
+//				controls[1] = key.id;
+//			} else if(key.name.equalsIgnoreCase("left")) {
+//				controls[2] = key.id;
+//			} else if(key.name.equalsIgnoreCase("right")) {
+//				controls[3] = key.id;
+//			} else if(key.name.equalsIgnoreCase("forward")) {
+//				controls[0] = key.id;
+//			} else if(key.name.equalsIgnoreCase("back")) {
+//				controls[1] = key.id;
+//			} else if(key.name.equalsIgnoreCase("fire")) {
+//				controls[4] = key.id;
+//			}
+//		}
 		camera = parentGame.getdraw().getCamera();
 		parentGame.addInfoText(scoreText);
 		parentGame.addMouseUser(this);
@@ -93,31 +90,31 @@ public class FFN_Player extends GameObject {
 
 	@Override
 	public void onTick(InputManeger input) {
-		if(input.wasKeyPressedI(controls[0])) {
+		if(input.wasKeyPressed("up")) {
 			up = true;
 		}
-		if(input.wasKeyReleasedI(controls[0])) {
+		if(input.wasKeyReleased("up")) {
 			up = false;
 		}
 		
-		if(input.wasKeyPressedI(controls[1])) {
+		if(input.wasKeyPressed("down")) {
 			down = true;
 		}
-		if(input.wasKeyReleasedI(controls[1])) {
+		if(input.wasKeyReleased("down")) {
 			down = false;
 		}
 		
-		if(input.wasKeyPressedI(controls[2])) {
+		if(input.wasKeyPressed("left")) {
 			left = true;
 		}
-		if(input.wasKeyReleasedI(controls[2])) {
+		if(input.wasKeyReleased("left")) {
 			left = false;
 		}
 		
-		if(input.wasKeyPressedI(controls[3])) {
+		if(input.wasKeyPressed("right")) {
 			right = true;
 		}
-		if(input.wasKeyReleasedI(controls[3])) {
+		if(input.wasKeyReleased("right")) {
 			right = false;
 		}
 		if(deadText == null) {
@@ -158,7 +155,7 @@ public class FFN_Player extends GameObject {
 				parentGame.addInfoText(deadText);
 			}
 		} else {
-			if(input.wasKeyReleasedI(controls[4])) {
+			if(input.wasKeyReleased("fire")) {
 				parentGame.removeInfoText(deadText);
 				deadText = null;
 				moveA(90,90);
@@ -190,7 +187,7 @@ public class FFN_Player extends GameObject {
 		fire(new Point(x,y));
 	}
 	private void fire(Point p) {
-		Bullet b = new Bullet(parentGame, cfg, (Point)p.clone(), true);
+		Bullet b = new Bullet(parentGame, (Point)p.clone(), true);
 		b.move(point.x+10,point.y+10);
 		parentGame.addObject(b);
 	}
@@ -239,7 +236,7 @@ public class FFN_Player extends GameObject {
 
 	@Override
 	public GameObject newObj(String[] file) {
-		FFN_Player nP = new FFN_Player(parentGame,cfg,0);
+		FFN_Player nP = new FFN_Player(parentGame,0);
 		nP.setDefParm(file);
 		nP.speed = Integer.parseInt(file[6].substring(8, file[6].length()-1));
 //		System.out.println(speed);
@@ -248,7 +245,7 @@ public class FFN_Player extends GameObject {
 
 	@Override
 	public GameObject newObj(JsonObj obj) {
-		FFN_Player nP = new FFN_Player(parentGame,cfg,0);
+		FFN_Player nP = new FFN_Player(parentGame,0);
 		nP.setDefParm(obj);
 		nP.speed = obj.getKey("speed").integer();
 		return nP;

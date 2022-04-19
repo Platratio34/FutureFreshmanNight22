@@ -8,17 +8,14 @@ import peterGames.CollisionMask;
 import peterGames.GameController;
 import peterGames.GameObject;
 import peterGames.InputManeger;
-import peterGames.util.Config;
 import peterGraphics.util.Graphic;
 import peterGraphics.util.Shape;
 import peterLibrary.PeterMath;
 
 public class Enemy extends GameObject {
-	
-	private FFN_Player player;
 
-	public Enemy(GameController game, Config Cfg) {
-		super(game, Cfg);
+	public Enemy(GameController game) {
+		super(game);
 		tag = "enemy";
 	}
 
@@ -48,6 +45,8 @@ public class Enemy extends GameObject {
 		// TODO Auto-generated method stub
 		if(Main.player != null && Main.player.deadText == null) {
 			Point pP = Main.player.getPoint();
+			pP.x += 10;
+			pP.y += 10;
 			Point dP = new Point(point.x-pP.x, point.y-pP.y);
 			dP.x = -1 * PeterMath.clampI(dP.x,2,-2);
 			dP.y = -1 * PeterMath.clampI(dP.y,2,-2);
@@ -62,14 +61,14 @@ public class Enemy extends GameObject {
 
 	@Override
 	public GameObject newObj(String[] file) {
-		Enemy nE = new Enemy(parentGame,cfg);
+		Enemy nE = new Enemy(parentGame);
 		nE.setDefParm(file);
 		return nE;
 	}
 
 	@Override
 	public GameObject newObj(JsonObj obj) {
-		Enemy nE = new Enemy(parentGame,cfg);
+		Enemy nE = new Enemy(parentGame);
 		nE.setDefParm(obj);
 		return nE;
 	}
@@ -78,13 +77,19 @@ public class Enemy extends GameObject {
 	public void collided(GameObject other) {
 		if(other.getTag().equals("bullet")) {
 			destroy();
-			createNewEnemy(parentGame, cfg);
+			createNewEnemy(parentGame);
 		} else if(other.getTag().equals("player")) {
 			((FFN_Player)other).kill();
+		} else {
+			Point oP = other.getPoint();
+			Point dP = new Point(point.x-oP.x, point.y-oP.y);
+			dP.x = 1 * PeterMath.clampI(dP.x,2,-2);
+			dP.y = 1 * PeterMath.clampI(dP.y,2,-2);
+			moveC(dP);
 		}
 	}
 	
-	public static void createNewEnemy(GameController game, Config cfg) {
+	public static void createNewEnemy(GameController game) {
 		Random rand = new Random();
 		int x = rand.nextInt(900) - 450;
 		int y = rand.nextInt(900) - 450;
@@ -94,7 +99,7 @@ public class Enemy extends GameObject {
 		while(y > 0 && y < 200) {
 			y = rand.nextInt(900) - 450;
 		}
-		Enemy e = new Enemy(game, cfg);
+		Enemy e = new Enemy(game);
 		e.move(x,y);
 		game.addObject(e);
 		Main.player.score++;

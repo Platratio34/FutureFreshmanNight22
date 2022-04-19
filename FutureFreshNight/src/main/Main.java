@@ -17,8 +17,8 @@ public class Main {
 	public static void main(String[] args) {
 		game = new GameController();
 		Config cfg = game.getconfig();
-		game.addDefObj(new FFN_Player(game,cfg,2));
-		game.addDefObj(new Enemy(game,cfg));
+		game.addDefObj(new FFN_Player(game,2));
+		game.addDefObj(new Enemy(game));
 		cfg.addKey(0,"up",KeyEvent.VK_W);
 		cfg.addKey(1,"down",KeyEvent.VK_S);
 		cfg.addKey(2,"left",KeyEvent.VK_A);
