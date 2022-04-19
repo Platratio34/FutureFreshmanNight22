@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import peterGames.GameController;
 import peterGames.util.Config;
@@ -25,7 +24,6 @@ public class Main {
 		cfg.addKey(3,"right",KeyEvent.VK_D);
 		cfg.addKey(4,"fire",KeyEvent.VK_SPACE);
 		
-		ArrayList<String> strs = new ArrayList<String>();
 		try {
 			InputStream in = Main.class.getResourceAsStream("default.txt");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
